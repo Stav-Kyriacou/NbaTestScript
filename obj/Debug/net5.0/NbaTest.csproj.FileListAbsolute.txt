@@ -1,0 +1,16 @@
+C:\Users\stavr\SwinUni\Programming\NbaTest\bin\Debug\net5.0\NbaTest.exe
+C:\Users\stavr\SwinUni\Programming\NbaTest\bin\Debug\net5.0\NbaTest.deps.json
+C:\Users\stavr\SwinUni\Programming\NbaTest\bin\Debug\net5.0\NbaTest.runtimeconfig.json
+C:\Users\stavr\SwinUni\Programming\NbaTest\bin\Debug\net5.0\NbaTest.runtimeconfig.dev.json
+C:\Users\stavr\SwinUni\Programming\NbaTest\bin\Debug\net5.0\NbaTest.dll
+C:\Users\stavr\SwinUni\Programming\NbaTest\bin\Debug\net5.0\ref\NbaTest.dll
+C:\Users\stavr\SwinUni\Programming\NbaTest\bin\Debug\net5.0\NbaTest.pdb
+C:\Users\stavr\SwinUni\Programming\NbaTest\obj\Debug\net5.0\NbaTest.csprojAssemblyReference.cache
+C:\Users\stavr\SwinUni\Programming\NbaTest\obj\Debug\net5.0\NbaTest.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\stavr\SwinUni\Programming\NbaTest\obj\Debug\net5.0\NbaTest.AssemblyInfoInputs.cache
+C:\Users\stavr\SwinUni\Programming\NbaTest\obj\Debug\net5.0\NbaTest.AssemblyInfo.cs
+C:\Users\stavr\SwinUni\Programming\NbaTest\obj\Debug\net5.0\NbaTest.csproj.CoreCompileInputs.cache
+C:\Users\stavr\SwinUni\Programming\NbaTest\obj\Debug\net5.0\NbaTest.dll
+C:\Users\stavr\SwinUni\Programming\NbaTest\obj\Debug\net5.0\ref\NbaTest.dll
+C:\Users\stavr\SwinUni\Programming\NbaTest\obj\Debug\net5.0\NbaTest.pdb
+C:\Users\stavr\SwinUni\Programming\NbaTest\obj\Debug\net5.0\NbaTest.genruntimeconfig.cache
