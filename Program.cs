@@ -7,24 +7,21 @@ namespace NbaTest
 {
     class Program
     {
-        public static float pointsAverage;
-        public static float reboundsAverage;
-        public static float assistsAverage;
-        public static float stealsAverage;
-        public static float blocksAverage;
+        public static float pointsAverage, reboundsAverage, assistsAverage, stealsAverage, blocksAverage;
+        public static List<Player> players = new List<Player>();
         static void Main(string[] args)
         {
-            var players = new List<Player>();
+            //read player data from csv
             using (var reader = new StreamReader("player_data_2017_2018.csv"))
             {
-                //read player data from csv
                 while (!reader.EndOfStream)
                 {
+                    //split each line of the csv at the ,
                     var line = reader.ReadLine();
                     var values = line.Split(",");
 
                     //add new player to list
-                    var p = new Player
+                    players.Add(new Player
                     {
                         Name = values[0],
                         Points = float.Parse(values[7]),
@@ -32,8 +29,7 @@ namespace NbaTest
                         Assists = float.Parse(values[20]),
                         Steals = float.Parse(values[22]),
                         Blocks = float.Parse(values[23])
-                    };
-                    players.Add(p);
+                    });
                 }
             }
 
@@ -44,6 +40,7 @@ namespace NbaTest
             float stealsTotal = 0;
             float blocksTotal = 0;
 
+            //add up all the stats we want
             foreach (var p in players)
             {
                 pointsTotal += p.Points;
@@ -55,6 +52,7 @@ namespace NbaTest
                 // Console.WriteLine($"Name: {p.Name}  Points: {p.Points}   Rebounds: {p.Rebounds}   Assists: {p.Assists}    Steals: {p.Steals}    Blocks: {p.Blocks}");
             }
 
+            //divide to get average
             pointsAverage = pointsTotal / players.Count;
             reboundsAverage = reboundsTotal / players.Count;
             assistsAverage = assistsTotal / players.Count;
@@ -71,17 +69,21 @@ namespace NbaTest
                 p.variance[3] = p.Steals - stealsAverage;
                 p.variance[4] = p.Blocks - blocksAverage;
 
-                foreach (var f in p.variance)
+                foreach (var v in p.variance)
                 {
-                    p.totalVariance += f;
+                    //add up the differences between the player's stats and the average
+                    //to get how much better or worse than average they are
+                    p.totalVariance += v;
                 }
-
             }
+
+            //sort list by total variance
             players = players.OrderBy(x => x.totalVariance).ToList();
 
+            //print all players and their variance
             foreach (var p in players)
             {
-                System.Console.WriteLine($"Name: {p.Name}    Variance: {p.totalVariance}");
+                System.Console.WriteLine($"Variance: {p.totalVariance.ToString("F3")} --> Name: {p.Name} ");
             }
             System.Console.WriteLine("------------------------------------");
             System.Console.WriteLine($"AVERAGES  Points: {pointsAverage}   Rebounds: {reboundsAverage}   Assists: {assistsAverage}   Steals: {stealsAverage}   Blocks: {blocksAverage}");
