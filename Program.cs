@@ -11,6 +11,9 @@ namespace NbaTest
         public static List<Player> players = new List<Player>();
         static void Main(string[] args)
         {
+            //Currently, this program compares each players Points, Rebounds, Assists, Steals and Blocks against the average of all players
+            //It then sorts the players based on the calculated rating
+
             //read player data from csv
             using (var reader = new StreamReader("player_data_2017_2018.csv"))
             {
