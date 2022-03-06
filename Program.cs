@@ -8,6 +8,7 @@ namespace NbaTest
     class Program
     {
         public static float pointsAverage, reboundsAverage, assistsAverage, stealsAverage, blocksAverage;
+        public static float averagePlayerVariance = 0f;
         public static List<Player> players = new List<Player>();
         static void Main(string[] args)
         {
@@ -62,7 +63,7 @@ namespace NbaTest
             stealsAverage = stealsTotal / players.Count;
             blocksAverage = blocksTotal / players.Count;
 
-
+            float totalPlayerVariance = 0;
             //compare player score to average
             foreach (var p in players)
             {
@@ -78,7 +79,10 @@ namespace NbaTest
                     //to get how much better or worse than average they are
                     p.totalVariance += v;
                 }
+                totalPlayerVariance += p.totalVariance;
             }
+            averagePlayerVariance = totalPlayerVariance / players.Count;
+
 
             //sort list by total variance
             players = players.OrderBy(x => x.totalVariance).ToList();
@@ -88,9 +92,52 @@ namespace NbaTest
             {
                 System.Console.WriteLine($"Variance: {p.totalVariance.ToString("F3")} --> Name: {p.Name} ");
             }
+
+            players = players.OrderByDescending(x => x.totalVariance).ToList();
+            float topVariances = 0f;
+            for (int i = 0; i < 13; i++)
+            {
+                topVariances += players[i].totalVariance;
+            }
+
+
+            //get the total variances for the 2021 winning team
+            var p1 = GetPlayerByName("Kevin Durant");
+            var p2 = GetPlayerByName("Stephen Curry");
+            var p3 = GetPlayerByName("Klay Thompson");
+            var p4 = GetPlayerByName("Draymond Green");
+            var p5 = GetPlayerByName("Andre Iguodala");
+            var p6 = GetPlayerByName("Shaun Livingston");
+            var p7 = GetPlayerByName("David West");
+            var p8 = GetPlayerByName("Ian Clark");
+            var p9 = GetPlayerByName("Zaza Pachulia");
+            var p10 = GetPlayerByName("Patrick McCaw");
+            var p11 = GetPlayerByName("JaVale McGee");
+            var p12 = GetPlayerByName("James Michael McAdoo");
+
+            float winningTeamVariance = p1.totalVariance + p2.totalVariance + p3.totalVariance + p4.totalVariance + p5.totalVariance + p6.totalVariance + p7.totalVariance + p8.totalVariance + p10.totalVariance + p9.totalVariance + p11.totalVariance + p12.totalVariance;
+
+
+
+
             System.Console.WriteLine("------------------------------------");
             System.Console.WriteLine($"AVERAGES  Points: {pointsAverage}   Rebounds: {reboundsAverage}   Assists: {assistsAverage}   Steals: {stealsAverage}   Blocks: {blocksAverage}");
+            System.Console.WriteLine($"Average player variance: {averagePlayerVariance.ToString("F8")}");
+            System.Console.WriteLine($"Top variances: {topVariances}");
+            System.Console.WriteLine($"Winning Team Variance: {winningTeamVariance}");
+            System.Console.WriteLine($"Winning Team Percentage: {(winningTeamVariance / topVariances) * 100}");
             System.Console.WriteLine($"Total Players: {players.Count}");
+        }
+        static Player GetPlayerByName(string name)
+        {
+            foreach (var p in players)
+            {
+                if (p.Name == name)
+                {
+                    return p;
+                }
+            }
+            return null;
         }
     }
     class Player
