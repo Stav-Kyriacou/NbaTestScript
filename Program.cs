@@ -10,7 +10,7 @@ namespace NbaTest
         //extra stats to check
         //3 point %
         //field goals made
-        public static float pointsAverage, reboundsAverage, assistsAverage, stealsAverage, blocksAverage;
+        public static float pointsAverage, reboundsAverage, assistsAverage, stealsAverage, blocksAverage, tppAverage, fgmAverage;
         public static float averagePlayerVariance = 0f;
         public static List<Player> AllPlayers = new List<Player>();
         public static List<Team> Teams = new List<Team>();
@@ -33,13 +33,21 @@ namespace NbaTest
                     {
                         Name = values[0],
                         Team = values[1],
-                        Points = float.Parse(values[7]) * 10f,
-                        Rebounds = float.Parse(values[19]) * 3f,
-                        Assists = float.Parse(values[20]) * 5f,
-                        Steals = float.Parse(values[22]) * 1f,
-                        Blocks = float.Parse(values[23]) * 1f
+                        Points = float.Parse(values[7]),
+                        Rebounds = float.Parse(values[19]),
+                        Assists = float.Parse(values[20]),
+                        Steals = float.Parse(values[22]),
+                        Blocks = float.Parse(values[23]),
+                        TPP = float.Parse(values[13]),
+                        FGM = float.Parse(values[8])
                     });
                 }
+            }
+            
+            //Print All Player Stats
+            foreach (var p in AllPlayers)
+            {
+                System.Console.WriteLine($"PTS: {p.Points.ToString("F2")}\tRBS: {p.Rebounds.ToString("F2")} \tAST: {p.Assists.ToString("F2")} \tSTL: {p.Steals.ToString("F2")} \tBLK: {p.Blocks.ToString("F2")} \tTPP: {p.TPP.ToString("F2")} \tFGM: {p.FGM.ToString("F2")} \t{p.Name}");
             }
 
             //Calculating Average Scores
@@ -48,6 +56,8 @@ namespace NbaTest
             float assistsTotal = 0;
             float stealsTotal = 0;
             float blocksTotal = 0;
+            float tppTotal = 0;
+            float fgmTotal = 0;
 
             //add up all the stats we want
             foreach (var p in AllPlayers)
@@ -57,6 +67,8 @@ namespace NbaTest
                 assistsTotal += p.Assists;
                 stealsTotal += p.Steals;
                 blocksTotal += p.Blocks;
+                tppTotal += p.TPP;
+                fgmTotal += p.FGM;
             }
 
             //divide to get average
@@ -65,6 +77,9 @@ namespace NbaTest
             assistsAverage = assistsTotal / AllPlayers.Count;
             stealsAverage = stealsTotal / AllPlayers.Count;
             blocksAverage = blocksTotal / AllPlayers.Count;
+            tppAverage = tppTotal / AllPlayers.Count;
+            fgmAverage = fgmTotal / AllPlayers.Count;
+
 
             float totalPlayerVariance = 0;
 
@@ -173,10 +188,7 @@ namespace NbaTest
             // System.Console.WriteLine($"Total Players: {AllPlayers.Count}");
             // System.Console.WriteLine($"Teams: {Teams.Count}");
 
-            foreach (var p in AllPlayers)
-            {
-                System.Console.WriteLine($"Name: {p.Name}\t\t\tPoints: {p.Points}");
-            }
+            
         }
         public static Player GetPlayerByName(string name)
         {
