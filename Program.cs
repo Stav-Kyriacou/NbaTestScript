@@ -166,12 +166,17 @@ namespace NbaTest
             }
 
 
-            // System.Console.WriteLine("------------General Stats--------------");
-            // System.Console.WriteLine($"AVERAGES  Points: {pointsAverage}   Rebounds: {reboundsAverage}   Assists: {assistsAverage}   Steals: {stealsAverage}   Blocks: {blocksAverage}");
+            System.Console.WriteLine("------------General Stats--------------");
+            System.Console.WriteLine($"AVERAGES  Points: {pointsAverage}   Rebounds: {reboundsAverage}   Assists: {assistsAverage}   Steals: {stealsAverage}   Blocks: {blocksAverage}");
             // System.Console.WriteLine($"Average player variance: {averagePlayerVariance.ToString("F8")}");
             // System.Console.WriteLine($"Top variances: {topVariances}");
             // System.Console.WriteLine($"Total Players: {AllPlayers.Count}");
             // System.Console.WriteLine($"Teams: {Teams.Count}");
+
+            foreach (var p in AllPlayers)
+            {
+                System.Console.WriteLine($"Name: {p.Name}\t\t\tPoints: {p.Points}");
+            }
         }
         public static Player GetPlayerByName(string name)
         {
