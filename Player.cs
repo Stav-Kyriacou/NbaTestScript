@@ -21,42 +21,42 @@ namespace NbaTest
             }
         }
         public float WeightedRebounds
-         {
+        {
             get
             {
                 return this.Rebounds * this.RBWeighting;
             }
         }
         public float WeightedAssists
-         {
+        {
             get
             {
                 return this.Assists * this.ASTWeighting;
             }
         }
         public float WeightedSteals
-         {
+        {
             get
             {
                 return this.Steals * this.STLWeighting;
             }
         }
         public float WeightedBlocks
-         {
+        {
             get
             {
                 return this.Blocks * this.BLKWeighting;
             }
         }
         public float WeightedTPP
-         {
+        {
             get
             {
                 return this.TPP * this.TPPWeighting;
             }
         }
         public float WeightedFGM
-         {
+        {
             get
             {
                 return this.FGM * this.FGMWeighting;
@@ -72,11 +72,38 @@ namespace NbaTest
         private float TPPWeighting = 1f;
         private float FGMWeighting = 1f;
 
-        public float[] variances { get; set; }
-        public float totalVariance { get; set; }
+        public float[] StatRatings { get; set; }
+        public float TotalRating
+        {
+            get
+            {
+                float total = 0;
+                foreach (var rating in StatRatings)
+                {
+                    total += rating;
+                }
+                return total;
+            }
+        }
+        public float TotalWeightedRating
+        {
+            get
+            {
+                float total = 0;
+                total += StatRatings[0] * PTSWeighting;
+                total += StatRatings[1] * RBWeighting;
+                total += StatRatings[2] * ASTWeighting;
+                total += StatRatings[3] * STLWeighting;
+                total += StatRatings[4] * BLKWeighting;
+                total += StatRatings[5] * TPPWeighting;
+                total += StatRatings[6] * FGMWeighting;
+
+                return total;
+            }
+        }
         public Player()
         {
-            this.variances = new float[5];
+            this.StatRatings = new float[7];
         }
     }
 }

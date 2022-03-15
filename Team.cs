@@ -7,14 +7,26 @@ namespace NbaTest
         public string NameShort;
         public List<Player> Players;
         public int Size { get { return Players.Count; } }
-        public float TotalTeamVariance
+        public float TotalTeamRating
         {
             get
             {
                 float total = 0;
                 foreach (var p in this.Players)
                 {
-                    total += p.totalVariance;
+                    total += p.TotalWeightedRating;
+                }
+                return total;
+            }
+        }
+        public float Top10PlayerRating
+        {
+            get
+            {
+                float total = 0;
+                for (int i = 0; i < 10; i++)
+                {
+                    total += this.Players[i].TotalWeightedRating;
                 }
                 return total;
             }
@@ -33,7 +45,7 @@ namespace NbaTest
             System.Console.WriteLine($"Player Count: {Size}");
             foreach (var p in this.Players)
             {
-                System.Console.WriteLine($"Variance: {p.totalVariance.ToString("F2")}\t\tName: {p.Name} ");
+                System.Console.WriteLine($"Rating: {p.TotalRating.ToString("F2")}\t\tName: {p.Name} ");
             }
         }
         public void PrintPlayers(int playersToPrint)
@@ -47,7 +59,7 @@ namespace NbaTest
             System.Console.WriteLine($"{this.GetFullTeamName()} Top {playersToPrint} Players");
             for (int i = 0; i < playersToPrint; i++)
             {
-                System.Console.WriteLine($"Variance: {this.Players[i].totalVariance.ToString("F2")}\t\tName: {this.Players[i].Name} ");
+                System.Console.WriteLine($"Rating: {this.Players[i].TotalRating.ToString("F2")}\t\tName: {this.Players[i].Name} ");
             }
         }
         public string GetFullTeamName()

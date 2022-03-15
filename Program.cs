@@ -19,6 +19,15 @@ namespace NbaTest
             //Currently, this program compares each players Points, Rebounds, Assists, Steals and Blocks against the average of all players
             //It then sorts the players based on the calculated rating
 
+            float[,] minMaxStats = new float[7, 2];
+            minMaxStats[0, 0] = 100;
+            minMaxStats[1, 0] = 100;
+            minMaxStats[2, 0] = 100;
+            minMaxStats[3, 0] = 100;
+            minMaxStats[4, 0] = 100;
+            minMaxStats[5, 0] = 100;
+            minMaxStats[6, 0] = 100;
+
             //read player data from csv
             using (var reader = new StreamReader("player_data_2017_2018.csv"))
             {
@@ -28,26 +37,52 @@ namespace NbaTest
                     var line = reader.ReadLine();
                     var values = line.Split(",");
 
+                    //store the desired stats from each line
+                    var points = float.Parse(values[7]);
+                    var rebounds = float.Parse(values[19]);
+                    var assists = float.Parse(values[20]);
+                    var steals = float.Parse(values[22]);
+                    var blocks = float.Parse(values[23]);
+                    var tpp = float.Parse(values[13]);
+                    var fgm = float.Parse(values[8]);
+
+                    //find the min and max of each stat
+                    if (points < minMaxStats[0, 0]) minMaxStats[0, 0] = points;
+                    if (points > minMaxStats[0, 1]) minMaxStats[0, 1] = points;
+                    if (rebounds < minMaxStats[1, 0]) minMaxStats[1, 0] = rebounds;
+                    if (rebounds > minMaxStats[1, 1]) minMaxStats[1, 1] = rebounds;
+                    if (assists < minMaxStats[2, 0]) minMaxStats[2, 0] = assists;
+                    if (assists > minMaxStats[2, 1]) minMaxStats[2, 1] = assists;
+                    if (steals < minMaxStats[3, 0]) minMaxStats[3, 0] = steals;
+                    if (steals > minMaxStats[3, 1]) minMaxStats[3, 1] = steals;
+                    if (blocks < minMaxStats[4, 0]) minMaxStats[4, 0] = blocks;
+                    if (blocks > minMaxStats[4, 1]) minMaxStats[4, 1] = blocks;
+                    if (tpp < minMaxStats[5, 0]) minMaxStats[5, 0] = tpp;
+                    if (tpp > minMaxStats[5, 1]) minMaxStats[5, 1] = tpp;
+                    if (fgm < minMaxStats[6, 0]) minMaxStats[6, 0] = fgm;
+                    if (fgm > minMaxStats[6, 1]) minMaxStats[6, 1] = fgm;
+
                     //add new player to list
                     AllPlayers.Add(new Player
                     {
                         Name = values[0],
                         Team = values[1],
-                        Points = float.Parse(values[7]),
-                        Rebounds = float.Parse(values[19]),
-                        Assists = float.Parse(values[20]),
-                        Steals = float.Parse(values[22]),
-                        Blocks = float.Parse(values[23]),
-                        TPP = float.Parse(values[13]),
-                        FGM = float.Parse(values[8])
+                        Points = points,
+                        Rebounds = rebounds,
+                        Assists = assists,
+                        Steals = steals,
+                        Blocks = blocks,
+                        TPP = tpp,
+                        FGM = fgm
                     });
                 }
             }
-            
+
+
             //Print All Player Stats
             foreach (var p in AllPlayers)
             {
-                System.Console.WriteLine($"PTS: {p.Points.ToString("F2")}\tRBS: {p.Rebounds.ToString("F2")} \tAST: {p.Assists.ToString("F2")} \tSTL: {p.Steals.ToString("F2")} \tBLK: {p.Blocks.ToString("F2")} \tTPP: {p.TPP.ToString("F2")} \tFGM: {p.FGM.ToString("F2")} \t{p.Name}");
+                // System.Console.WriteLine($"PTS: {p.Points.ToString("F2")}\tRBS: {p.Rebounds.ToString("F2")} \tAST: {p.Assists.ToString("F2")} \tSTL: {p.Steals.ToString("F2")} \tBLK: {p.Blocks.ToString("F2")} \tTPP: {p.TPP.ToString("F2")} \tFGM: {p.FGM.ToString("F2")} \t{p.Name}");
             }
 
             //Calculating Average Scores
@@ -81,45 +116,55 @@ namespace NbaTest
             fgmAverage = fgmTotal / AllPlayers.Count;
 
 
-            float totalPlayerVariance = 0;
+            //loop through all players
+            //for every stats
+            //divide player stat by max stat
+            //assign the rating
 
-            //compare player score to average
             foreach (var p in AllPlayers)
             {
-                p.variances[0] = p.Points - pointsAverage;
-                p.variances[1] = p.Rebounds - reboundsAverage;
-                p.variances[2] = p.Assists - assistsAverage;
-                p.variances[3] = p.Steals - stealsAverage;
-                p.variances[4] = p.Blocks - blocksAverage;
-
-                foreach (var v in p.variances)
-                {
-                    //add up the differences between the player's stats and the average
-                    //to get how much better or worse than average they are
-                    p.totalVariance += v;
-                }
-                totalPlayerVariance += p.totalVariance;
+                p.StatRatings[0] = p.Points / minMaxStats[0, 1];
+                p.StatRatings[1] = p.Rebounds / minMaxStats[1, 1];
+                p.StatRatings[2] = p.Assists / minMaxStats[2, 1];
+                p.StatRatings[3] = p.Steals / minMaxStats[3, 1];
+                p.StatRatings[4] = p.Blocks / minMaxStats[4, 1];
+                p.StatRatings[5] = p.TPP / minMaxStats[5, 1];
+                p.StatRatings[6] = p.FGM / minMaxStats[6, 1];
             }
-            averagePlayerVariance = totalPlayerVariance / AllPlayers.Count;
+
+            AllPlayers = AllPlayers.OrderBy(x => x.TotalRating).ToList();
+
+            foreach (var p in AllPlayers)
+            {
+                // System.Console.WriteLine($"Rating: {p.TotalRating.ToString("F2")}\t{p.Name}");
+            }
 
 
-            //sort list by total variance
-            AllPlayers = AllPlayers.OrderBy(x => x.totalVariance).ToList();
+            // float totalPlayerVariance = 0;
 
-            //print all players and their variance
+            // //compare player score to average
             // foreach (var p in AllPlayers)
             // {
-            //     System.Console.WriteLine($"Variance: {p.totalVariance.ToString("F3")} --> Team: {p.Team} --> Name: {p.Name} ");
+            //     p.StatRatings[0] = p.Points - pointsAverage;
+            //     p.StatRatings[1] = p.Rebounds - reboundsAverage;
+            //     p.StatRatings[2] = p.Assists - assistsAverage;
+            //     p.StatRatings[3] = p.Steals - stealsAverage;
+            //     p.StatRatings[4] = p.Blocks - blocksAverage;
+
+            //     foreach (var v in p.StatRatings)
+            //     {
+            //         //add up the differences between the player's stats and the average
+            //         //to get how much better or worse than average they are
+            //         // p.TotalRating += v;
+            //     }
+            //     totalPlayerVariance += p.TotalRating;
             // }
+            // averagePlayerVariance = totalPlayerVariance / AllPlayers.Count;
 
-            AllPlayers = AllPlayers.OrderByDescending(x => x.totalVariance).ToList();
-            float topVariances = 0f;
-            for (int i = 0; i < 12; i++)
-            {
-                topVariances += AllPlayers[i].totalVariance;
-            }
 
-            
+
+
+
             //Place all players into their teams
             string currentTeamName;
             bool teamExists = false;
@@ -153,21 +198,21 @@ namespace NbaTest
             }
 
             // Print all teams and their players
-            Teams = Teams.OrderBy(x => x.TotalTeamVariance).ToList();
+            Teams = Teams.OrderBy(x => x.Top10PlayerRating).ToList();
 
-            // foreach (var t in Teams)
-            // {
-            //     System.Console.WriteLine();
-            //     t.PrintPlayers(10);
-            //     System.Console.WriteLine($"Team Variance: {t.TotalTeamVariance}");
-            // }
+            foreach (var t in Teams)
+            {
+                System.Console.WriteLine();
+                t.PrintPlayers(10);
+                System.Console.WriteLine($"Team Rating: {t.Top10PlayerRating}");
+            }
             System.Console.WriteLine();
 
 
             //Print the predicted team ladder
             System.Console.WriteLine();
             System.Console.WriteLine("Predicted Ranking");
-            Teams = Teams.OrderByDescending(x => x.TotalTeamVariance).ToList();
+            Teams = Teams.OrderByDescending(x => x.Top10PlayerRating).ToList();
             for (int i = 0; i < Teams.Count; i++)
             {
                 System.Console.WriteLine($"{Teams[i].GetFullTeamName()}");
@@ -184,11 +229,10 @@ namespace NbaTest
             System.Console.WriteLine("------------General Stats--------------");
             System.Console.WriteLine($"AVERAGES  Points: {pointsAverage}   Rebounds: {reboundsAverage}   Assists: {assistsAverage}   Steals: {stealsAverage}   Blocks: {blocksAverage}");
             // System.Console.WriteLine($"Average player variance: {averagePlayerVariance.ToString("F8")}");
-            // System.Console.WriteLine($"Top variances: {topVariances}");
             // System.Console.WriteLine($"Total Players: {AllPlayers.Count}");
             // System.Console.WriteLine($"Teams: {Teams.Count}");
 
-            
+
         }
         public static Player GetPlayerByName(string name)
         {
