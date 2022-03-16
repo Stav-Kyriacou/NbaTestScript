@@ -64,13 +64,13 @@ namespace NbaTest
         }
 
         //Weightings
-        private float PTSWeighting = 1f;
-        private float RBWeighting = 1f;
-        private float ASTWeighting = 1f;
-        private float STLWeighting = 1f;
-        private float BLKWeighting = 1f;
-        private float TPPWeighting = 1f;
-        private float FGMWeighting = 1f;
+        private float PTSWeighting = 3f;
+        private float RBWeighting = 10f;
+        private float ASTWeighting = 0.5f;
+        private float STLWeighting = 7.5f;
+        private float BLKWeighting = 0.5f;
+        private float TPPWeighting = 3f;
+        private float FGMWeighting = 4f;
 
         public float[] StatRatings { get; set; }
         public float TotalRating
