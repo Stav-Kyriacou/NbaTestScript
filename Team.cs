@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 
 namespace NbaTest
 {
@@ -7,28 +8,27 @@ namespace NbaTest
         public string NameShort;
         public List<Player> Players;
         public int Size { get { return Players.Count; } }
-        public float TotalTeamRating
+        public float TeamRating
         {
             get
             {
-                float total = 0;
+                this.Players = this.Players.OrderByDescending(x => x.TotalWeightedRating).ToList();
+
+                float rating = 0;
+                for (int i = 0; i < 5; i++)
+                {
+                    rating += this.Players[i].TotalWeightedRating;
+                }
+
+                float average = 0;
                 foreach (var p in this.Players)
                 {
-                    total += p.TotalWeightedRating;
+                    average += p.TotalWeightedRating;
                 }
-                return total;
-            }
-        }
-        public float Top10PlayerRating
-        {
-            get
-            {
-                float total = 0;
-                for (int i = 0; i < 10; i++)
-                {
-                    total += this.Players[i].TotalWeightedRating;
-                }
-                return total;
+                average -= rating;
+                average = average/(this.Players.Count - 5);
+
+                return rating;
             }
         }
         public Team()
